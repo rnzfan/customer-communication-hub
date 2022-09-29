@@ -14,7 +14,7 @@ The two main functionalities of the application are the accountability and colla
 -- Members can comment (discuss) within each Task and its Draft in the same page before sending out the actual response to customer.  
    
 # Distinctiveness  
-- This application is a customer communication tool which is fundamentally different from all previous projects we implemented such as the e-commerce site, social network or old CS50W Pizza ordering project.  
+- This application is a customer communication tool which is fundamentally different from all previous projects we implemented such as the e-commerce site, social network or old Pizza ordering project.  
 - I specifiedly used both Class-based and function-based views to implement views as Python objects instead of functions. Which is significantly different from all my previous projects in which I purely used function-based views.  
 - The primary content source was came from outside of the application. I noticed that the content sources from all previous projects were relied on users' created content, through Forms to capture user inputs for example. Which is easier than capturing (fetching) content from outside. This application was implemented to communicate with a real-world application (Gmail) through the APIs Google provided.  
 - related_name argument is filled properly for OneToOne relationship between two tables.  
