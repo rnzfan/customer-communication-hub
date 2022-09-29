@@ -1,0 +1,120 @@
+{% extends "frontpage/layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block bodyLeft %}
+<h1>Tasks</h1>
+{% for task in page_obj %}
+    <div id="task_list_{{ task.id }}" class="task_list box" onClick="showTaskDetails({{ task.id }})">
+        <div class="client_name">{{ task.client }}</div>
+        <div class="time">{{ task.time_received|date:"j F" }}</div>
+        <div class="task_title">{{ task.title|title }}</div>
+        <div class="task_snippet">{{ task.snippet }}</div>
+    </div>
+{% endfor %}
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a class="btn btn-outline-dark btn-sm" href="?page=1">&lt;&lt;</a>
+            <a class="btn btn-outline-dark btn-sm" href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+        {% endif %}
+        <span class="current">
+            {% for number in page_obj.paginator.page_range %}
+                {% if page_obj.number == number %}
+                    <a class="btn btn-dark btn-sm" href="?page={{ number }}">{{ number }}</a>
+                {% elif number > page_obj.number|add:'-2' and number < page_obj.number|add:'2' %}
+                    <a class="btn btn-outline-dark btn-sm" href="?page={{ number }}">{{ number }}</a>
+                {% endif %}
+            {% endfor %}
+        </span> 
+        {% if page_obj.has_next %}
+            <a class="btn btn-outline-dark btn-sm" href="?page={{ page_obj.next_page_number }}">&gt;</a>
+            <a class="btn btn-outline-dark btn-sm" href="?page={{ page_obj.paginator.num_pages }}">&gt;&gt;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}
+
+{% block bodyMiddle %}
+<h1>Details</h1>
+{% for task in page_obj %}
+    <div id="task_{{ task.id }}" class="task_details box">
+        <div class="d-flex justify-content-between">
+            <div class="client_name">{{ task.client }}</div>
+            <div class="time">{{ task.time_received|date:"P @ l, jS F Y" }}</div>
+        </div>
+        <div class="d-flex justify-content-between align-items-end">
+            <div class="task_title">{{ task.title|title }}</div>
+            <div class="assignment">
+                {% if task.being_assigned %}
+                    <span class="assigned_member">{{ task.being_assigned.member|title }}</span>
+                {% else %}
+                    <span class="unassigned">Unassigned</span>
+                {% endif %}
+            </div>
+        </div>
+        <hr id="upper_line">
+        <div class="task_content">{{ task.content|linebreaksbr }}</div>
+        <hr>
+        {% if task.being_assigned %}
+            <form class="unassign_form" method="POST">
+                <button name="unassign_button" type="submit" value="{{ task.id }}" data-page="{{ page_obj.number }}" class="btn btn-primary btn-sm">Unassign</button>
+            </form>
+        {% else %}
+            <form class="assign_form" method="POST">
+                <select class="form-select form-select-sm select_member" name="assign_member" id="" required>
+                        <option value="" selected disable hidden>Choose a team member</option>
+                    {% for member in members %}
+                        <option value="{{ member.id }}">{{ member }}</option>
+                    {% endfor %}
+                </select>
+                <button name="assign_button" type="submit" value="{{ task.id }}" data-page="{{ page_obj.number }}" class="btn btn-primary btn-sm">Assign</button>
+            </form>
+        {% endif %}
+        <hr>
+        {% if message %}
+            <div>{{ message }}</div>
+        {% endif %}
+        <div class="comment">
+            <form method="POST">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <input name="page_number" type="hidden" value="{{ page_obj.number }}">
+                <button name="comment_task_button" type="submit" value="{{ task.id }}" class="btn btn-primary btn-sm">Submit</button>
+            </form>
+        </div>
+        <hr>
+        {% if task.comments.count == 0 %}
+            <div>No comments</div>
+        {% else %}
+            <p class="number_of_comment">{{ task.comments.count }} comment{{ task.comments.count|pluralize }}</p>
+            {% for comment in task.comments.all %}
+            <div class="comment_box">
+                <p class="comment_title">{{ comment.member|title }} at {{ comment.time_commented|date:"P jS F" }} said:</p>
+                <p class="comment_content">{{ comment.content }}</p>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endfor %}
+{% endblock %}
+
+{% block bodyRight %}
+<h1>Drafted Reply</h1>
+{% if message %}
+    <div>{{ message }}</div>
+{% endif %}
+{% for task in page_obj %}
+    <div id="draft_{{ task.id }}" class="draft box">
+        {% if task.is_done %}
+            <div class="done_message">TASK DONE</div>
+        {% endif %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ task.draft_form|crispy }}
+            <input name="page_number" type="hidden" value="{{ page_obj.number }}">
+            <button name="draft_save_button" type="submit" value="{{ task.id }}" class="btn btn-primary btn-sm">Save</button>
+            <button name="draft_send_button" type="submit" {% if not task.drafted_for %} disabled {% endif %} value="{{ task.id }}" class="btn btn-success btn-sm">Send</button>
+        </form>
+    </div>
+{% endfor %}
+{% endblock %}

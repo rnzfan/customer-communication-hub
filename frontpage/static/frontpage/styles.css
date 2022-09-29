@@ -1,0 +1,137 @@
+.menu {
+    background-color: #e3f2fd;
+}
+
+h1 {
+    margin: 5px 0px;
+    font-size: medium;
+    color: darkcyan;
+}
+
+.box {
+    width: 100%;
+    border-radius: 10px;
+    margin: 5px 0px;
+    padding: 10px;
+}
+
+.task_list {
+    border: 1px solid lightseagreen;
+}
+
+.task_list .client_name {
+    font-weight: bold;
+    font-size: x-small;
+    float: left;
+}
+
+.task_list .time {
+    float: right;
+    font-size: x-small;
+}
+
+.task_list .task_title {
+    font-weight: bold;
+    font-size: x-small;
+    clear: left;
+}
+
+.task_list .task_snippet {
+    font-size: xx-small;
+    color: grey;
+}
+
+.task_details {
+    display: none;
+    border: 1px solid darkslateblue;
+}
+
+.task_details .client_name {
+    font-weight: bold;
+    font-size: small;
+}
+
+.task_details .time {
+    font-size: small;
+}
+
+.task_details .task_title {
+    font-weight: bold;
+}
+
+.task_details .assignment {
+    font-size: small;
+}
+
+.draft {
+    display: none;
+}
+
+.assigned_member {
+    background-color: darkorange;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.unassigned {
+    background-color: darkred;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.task_details .task_content {
+    font-size: small;
+    color: gray;
+}
+
+#upper_line {
+    margin-top: 8px;
+}
+
+.select_member {
+    display: inline-block;
+    width: fit-content;
+}
+
+.number_of_comment {
+    color: gray;
+}
+
+.comment_box {
+    font-size: small;
+    border: 1px solid darkolivegreen;
+    width: 100%;
+    border-radius: 10px;
+    margin: 5px 0px;
+    padding: 10px 5px;
+}
+
+.comment_title {
+    color: darkolivegreen;
+    font-weight: bold;
+}
+
+.comment_content {
+    color: gray
+}
+
+.comment_task_form {
+    padding: 10px;
+    max-width: 100%;
+    border-radius: 10px;
+    border: 2px solid darkgoldenrod;
+}
+
+.comment_task_form:focus {
+    outline: none;
+    box-shadow: 2px 2px 2px #999;
+}
+
+.done_message {
+    background-color: green;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
